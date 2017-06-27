@@ -1,0 +1,323 @@
+\documentclass[handout]{beamer}
+\usepackage[latin1]{inputenc}
+\usetheme{Luebeck}
+\setbeamertemplate{footline}[frame number] 
+\setbeamertemplate{navigation symbols}{} 
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{exercise}{Exercise}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\mathchardef\sa="303A
+\newcommand{\esup}{\mathop{{\rm ess\,sup}}\limits}
+\let\Eqnarray=\eqnarray
+\renewcommand{\eqnarray}{\arraycolsep=0.1675em \Eqnarray}
+\newcommand{\R}{{\bf R}}
+\newcommand{\C}{{\bf C}}
+\newcommand{\Q}{{\bf Q}}
+\newcommand{\Z}{{\bf Z}}
+\newcommand{\N}{{\bf N}}
+\newcommand{\K}{{\bf K}}
+\renewcommand\Re{\operatorname{Re}}
+\renewcommand\Im{\operatorname{Im}}
+
+% enumabc
+%
+\makeatletter
+\newcommand{\enumabc}
+	{\expandafter\def\csname the\@enumctr \endcsname{\alph{\@enumctr}}%
+	 \expandafter\def\csname label\@enumctr \endcsname
+		{\rm(\csname the\@enumctr \endcsname)}}%
+\newcommand{\enuminc}[1]{\addtocounter{\@enumctr}{#1}}
+\makeatother
+%
+
+\title{Functional Analysis}
+\subtitle{Lecture 9: Inner Product Spaces and Hilbert Spaces}
+\author{Bengt Ove Turesson}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}[shrink=15]\frametitle{Inner Product Spaces}
+
+\begin{definition}
+An {\bf inner product} on a complex vector space $X$ is a function
+$(\,\cdot\,,\,\cdot\,):X\times X\rightarrow\C$ with the following properties:
+\begin{itemize}
+\item[(i)] the function $(\,\cdot\,,z):X\rightarrow\C$ is linear for every $z\in X$, that is,
+$$(\alpha x+\beta y,z)=\alpha(x,z)+\beta(y,z)\quad\mbox{for all}\ x,y\in X,\ \alpha,\beta\in\C;$$
+\item[(ii)] $(x,y)=\overline{(y,x)}$ for all $x,y\in X$;
+\item[(iii)] $(x,x)\ge0$ for every $x\in X$;
+\item[(iv)] $(x,x)=0$ if and only if $x=0$.
+\end{itemize}
+Equipped with an inner product, $X$ is called an {\bf inner product space}.
+\end{definition}
+
+\begin{remark}
+It follows from (i) and (ii) that
+$$(x,y+z)=(x,y)+(x,z)\quad\mbox{and}\quad (x,\alpha y)=\overline{\alpha}(x,y)$$
+for $x,y,z\in X$ and $\alpha\in\C$. This means that $(\,\cdot\,,\,\cdot\,)$ is {\bf sesquilinear}
+(linear in the first argument, but only additive in the second).
+\end{remark}
+
+\end{frame}
+
+\begin{frame}[shrink=10]\frametitle{Inner Product Spaces}
+
+\begin{example}[Inner product spaces]
+\begin{enumerate}\enumabc
+\item The space $\C^d$ with $(x,y)=\sum^d_{j=1}x_j\overline{y_j}$, $x,y\in\C^d$.
+\item The space $\ell^2$ with $(x,y)=\sum^\infty_{j=1}x_j\overline{y_j}$, $x,y\in\ell^2$.
+The series is absolutely convergent since
+$$2|x_j\overline{y_j}|\le|x_j|^2+|y_j|^2\quad\mbox{for every index}\ j\ge1.$$
+\item Suppose that $A$ is a measurable subset of $\R$.
+Then $L^2(A)$ is an inner product space with
+$$(f,g)=\int_Af(t)\overline{g(t)}\,dt,\quad f,g\in L^2(A).$$
+This definition makes sense since $f\overline{g}$ is measurable and belongs to $L^1(A)$ because
+$$2|f\overline{g}|\le|f|^2+|g|^2\in L^1(A).$$
+\end{enumerate}
+\end{example}
+
+\end{frame}
+
+\begin{frame}[shrink=25]\frametitle{The Cauchy--Schwartz Inequality}
+
+\begin{theorem}[The Cauchy--Schwarz Inequality]
+Suppose that $X$ is an inner product space. Then
+$$|(x,y)|\le\sqrt{(x,x)}\sqrt{(y,y)}\quad\mbox{for all}\ x,y\in X.$$
+Equality holds if and only if $x$ and $y$ are linearly dependent.
+\end{theorem}
+
+\begin{proof}
+\begin{itemize}
+\item The inequality holds true if $y=0$.
+\item If $y\neq0$, put $e=\dfrac{y}{\sqrt{(y,y)}}$.
+\item Then $(e,e)=1$ and
+\begin{align*}
+0&\le(x-(x,e)e,x-(x,e)e)=(x,x)-|(x,e)|^2\\
+&=(x,x)-\frac{|(x,y)|^2}{(y,y)},
+\end{align*}
+from which the Cauchy--Schwarz inequality follows directly.
+\item Equality holds if and only
+if $x-(x,e)e=x-\dfrac{(x,y)}{(y,y)}y=0$, which means that $x$ and $y$ are linearly dependent.\qedhere
+\end{itemize}
+\end{proof}
+
+\end{frame}
+
+\begin{frame}[shrink=15]\frametitle{The Cauchy--Schwartz Inequality}
+
+\begin{example}
+The Cauchy--Schwarz inequality for $\ell^2$ is
+$$\biggl|\sum^\infty_{j=1}x_j\overline{y_j}\biggr|
+\le\biggl(\sum^\infty_{j=1}|x_j|^2\biggr)^{1/2}
+\biggl(\sum^\infty_{j=1}|y_j|^2\biggr)^{1/2}$$
+for $x,y\in\ell^2$. This inequality coincides with the discrete version of H\"older's inequality.
+\end{example}
+
+\begin{example}
+The Cauchy--Schwarz inequality for $L^2(A)$ is
+$$\biggl|\int_Af(t)\overline{g(t)}\,dt\biggr|\le\biggl(\int_A|f(t)|^2\,dt\biggr)^{1/2}
+\biggl(\int_A|g(t)|^2\,dt\biggr)^{1/2}$$
+for $f,g\in L^2(A)$. This inequality coincides with H\"older's inequality for $L^2(A)$.
+\end{example}
+
+\end{frame}
+
+\begin{frame}[shrink=10]\frametitle{The Norm}
+
+\begin{definition}
+Suppose that $X$ is an inner product space. For $x\in X$, we define $\|x\|=\sqrt{(x,x)}$.
+\end{definition}
+
+\begin{remark}
+With this notation, the Cauchy--Schwarz inequality may be written
+$$|(x,y)|\le\|x\|\|y\|,\quad x,y\in X.$$
+\end{remark}
+
+\end{frame}
+
+\begin{frame}[shrink=10]\frametitle{The Norm}
+
+\begin{proposition}
+Suppose that $X$ is an inner product space. Then the function\/ $\|\,\cdot\,\|$ is a norm on an $X$\/{\rm:}
+\begin{itemize}
+\item[\rm(i)] $\|x\|\ge0$ for every $x\in X${\rm;}\medskip
+\item[\rm(ii)] if\/ $\|x\|=0$, then $x=0${\rm;}\medskip
+\item[\rm(iii)] $\|\alpha x\|=|\alpha|\|x\|$ for every $\alpha\in\C$ and every $x\in X${\rm;}\medskip
+\item[\rm(iv)] $\|x+y\|\le\|x\|+\|y\|$ for all $x,y\in X$ (the {\bf triangle inequality}).
+\end{itemize}
+\end{proposition}
+
+\begin{proof}
+It is only the triangle inequality that really requires a proof. We deduce this from the
+Cauchy--Schwarz inequality in the following way:
+\begin{align*}
+\|x+y\|^2&=\|x\|^2+2\Re(x,y)+\|y\|^2\le\|x\|^2+2|(x,y)|+\|y\|^2\\
+&\le\|x\|^2+2\|x\|\|y\|+\|y\|^2=(\|x\|+\|y\|)^2.\qedhere
+\end{align*}
+\end{proof}
+
+\end{frame}
+
+\begin{frame}\frametitle{The Norm}
+
+\begin{example}
+The norm of a sequence $x\in\ell^2$ is
+\begin{align*}
+\|x\|_2&=\biggl(\sum^\infty_{j=1}|x_j|^2\biggr)^{1/2}.
+\end{align*}
+\end{example}
+
+\begin{example}
+The norm of a function $f\in L^2(A)$ is
+\begin{align*}
+\|f\|_2&=\biggl(\int_A|f(t)|^2\,dt\biggr)^{1/2}.
+\end{align*}
+\end{example}
+
+\end{frame}
+
+\begin{frame}\frametitle{The Norm}
+
+\begin{corollary}
+Suppose that $X$ is an inner product space. Then the function\/ $(\,\cdot\,,z):X\rightarrow\C$ is
+{\bf Lipschitz continuous} for every fixed $z\in X$\/{\rm:}
+$$|(x,z)-(y,z)|\le\|x-y\|\|z\|\quad\mbox{for all}\ x,y\in X.$$
+\end{corollary}
+
+\begin{proof}
+The Cauchy--Schwarz inequality shows that
+\begin{align*}
+|(x,z)-(y,z)|&=|(x-y,z)|\le\|x-y\|\|z\|.\qedhere
+\end{align*}
+\end{proof}
+
+\end{frame}
+
+\begin{frame}\frametitle{The Norm}
+
+\begin{proposition}[The Parallelogram Law]
+Suppose that $X$ is an inner product space. Then
+$$\|x+y\|^2+\|x-y\|^2=2(\|x\|^2+\|y\|^2)\quad\mbox{for all}\ x,y\in X.$$
+\end{proposition}
+
+\begin{proof}
+Expand the left-hand side.
+\end{proof}
+
+\end{frame}
+
+\begin{frame}\frametitle{Hilbert Spaces}
+
+\begin{definition}
+Suppose that $X$ is an inner product space.
+\begin{enumerate}\enumabc
+\item A sequence $(x_n)^\infty_{n=1}$ in $X$ is said to be {\bf convergent} if there exists an
+element~$x\in X$ such that $\|x-x_n\|\rightarrow0$ as $n\rightarrow\infty$.
+\item A sequence $(x_n)^\infty_{n=1}$ in $X$ is said to be a {\bf Cauchy sequence} if
+$\|x_m-x_n\|\rightarrow0$ as~$m,n\rightarrow\infty$.
+\item The space $X$ is said to be {\bf complete} if every Cauchy sequence is convergent.
+\item A {\bf Hilbert space} is a complete inner product space.
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+It has been shown that the spaces in the first example are all Hilbert spaces.
+\end{example}
+
+\end{frame}
+
+\begin{frame}\frametitle{Orthogonality}
+
+\begin{definition}
+Suppose that $X$ is an inner product space. Two vectors $x,y\in X$ are said to be {\bf orthogonal}
+if $(x,y)=0$. This circumstance is denoted $x\perp y$.
+\end{definition}
+
+\begin{proposition}[Pythagoras' Theorem]
+Suppose that $X$ is an inner product space. If $x_1,\ldots,x_N\in X$ are pairwise orthogonal, that is,
+$(x_m,x_n)=0$ if $m\neq n$, then
+$$\biggl\|\sum^N_{n=1}x_n\biggr\|^2=\sum^N_{n=1}\|x_n\|^2.$$
+\end{proposition}
+
+\end{frame}
+
+\begin{frame}\frametitle{Orthogonality}
+
+\begin{proof}
+Just expand the left-hand side in the identity using the properties of the inner product
+and the fact that the vectors are pairwise orthogonal:
+\begin{align*}
+\biggl\|\sum\limits^N_{n=1}x_n\biggr\|^2
+&=\biggl(\sum\limits^N_{m=1}x_m,\sum\limits^N_{n=1}x_n\biggr)
+=\sum\limits^N_{m=1}\sum\limits^N_{n=1}(x_m,x_n)=\sum\limits^N_{n=1}(x_n,x_n)\\
+&=\sum\limits^N_{n=1}\|x_n\|^2.\qedhere
+\end{align*}
+\end{proof}
+
+\end{frame}
+
+\begin{frame}\frametitle{Orthonormal Sequences}
+
+\begin{definition}\label{H1def4.5}
+Suppose that $X$ is an inner product space. A sequence $(e_n)^\infty_{n=1}\subset X$ is said
+to be {\bf orthonormal} if the elements in the sequence are pairwise orthogonal and all have norm $1$.
+\end{definition}
+
+\begin{example}
+The sequence $\left(\dfrac{e^{int}}{\sqrt{2\pi}}\right)^\infty_{n=-\infty}\subset L^2(-\pi,\pi)$ is orthonormal:
+\begin{align*}
+\left(\frac{e^{imt}}{\sqrt{2\pi}},\frac{e^{int}}{\sqrt{2\pi}}\right)&=\frac{1}{2\pi}\int^\pi_{-\pi}e^{i(m-n)t}\,dt
+=\biggl\{\begin{array}{lcl}
+1&\mbox{if}&m=n\smallskip\\
+0&\mbox{if}&m\neq n
+\end{array}\biggr..
+\end{align*}
+\end{example}
+
+\end{frame}
+
+\begin{frame}[shrink=15]\frametitle{Orthonormal Sequences}
+
+\begin{lemma}
+Suppose that $H$ is a Hilbert space. Suppose furthermore that\/~$(e_n)^\infty_{n=1}\subset H$ is
+orthonormal and let\/ $(c_n)^\infty_{n=1}$ be a sequence of complex numbers.
+Then the series\/~$\sum^\infty_{n=1}c_ne_n$ is convergent in $H$ if and only if\/
+$$\sum^\infty_{n=1}|c_n|^2<\infty.$$
+\end{lemma}
+
+\begin{proof}
+\begin{itemize}
+\item According to Pythagoras' theorem,
+$$\biggl\|\sum^M_{n=N}c_ne_n\biggr\|^2=\sum^M_{n=N}|c_n|^2\quad\mbox{for}\ M>N.$$
+\item It follows that the series $\sum^\infty_{n=1}c_ne_n$ is convergent in $H$ if and only
+if\/~$\sum^\infty_{n=1}|c_n|^2$ is convergent.\qedhere
+\end{itemize}
+\end{proof}
+
+\end{frame}
+
+\begin{frame}[shrink=20]\frametitle{Orthonormal Sequences}
+
+\begin{example}
+\begin{itemize}
+\item If the sequence $(c_n)^\infty_{n=-\infty}\subset\C$ satisfies
+$$\sum^\infty_{n=-\infty}|c_n|^2<\infty,$$
+then the function
+$$f(t)=\sum^\infty_{n=-\infty}c_ne^{int},\ t\in\R,$$
+belongs to $L^2(-\pi,\pi)$.
+\item Compare this with the following result: If we assume that
+$$\sum^\infty_{n=-\infty}|c_n|<\infty$$
+(a stronger assumption), then it follows from Weierstrass' theorem that $f$ is continuous on $\R$.
+\end{itemize}
+\end{example}
+
+\end{frame}
+
+\end{document}

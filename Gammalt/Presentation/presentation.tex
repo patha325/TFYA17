@@ -1,0 +1,73 @@
+%\documentclass[handout]{beamer}
+\documentclass[•]{beamer}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usetheme{Luebeck}
+\setbeamertemplate{footline}[frame number] 
+\setbeamertemplate{navigation symbols}{} 
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{exercise}{Exercise}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\mathchardef\sa="303A
+\newcommand{\esup}{\mathop{{\rm ess\,sup}}\limits}
+\let\Eqnarray=\eqnarray
+\renewcommand{\eqnarray}{\arraycolsep=0.1675em \Eqnarray}
+
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\e}{\mathrm{e}}
+
+% enumabc
+%
+\makeatletter
+\newcommand{\enumabc}
+	{\expandafter\def\csname the\@enumctr \endcsname{\alph{\@enumctr}}%
+	 \expandafter\def\csname label\@enumctr \endcsname
+		{\rm(\csname the\@enumctr \endcsname)}}%
+\newcommand{\enuminc}[1]{\addtocounter{\@enumctr}{#1}}
+\makeatother
+%
+\subtitle{Transmission properties in a short biased quantum wire}
+\title{TFYA17 Project}
+\author{Patrik Hallsj\"{o}, Felix Faber}
+\date{}
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Table of Contents}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+\AtBeginSubsection[]
+{
+  \begin{frame}
+    \frametitle{Table of Contents}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+\begin{frame}
+\tableofcontents
+\end{frame}
+\section{Introduction}
+\begin{frame}[shrink=10]\frametitle{Introduction}
+\begin{block}
+
+In this Bachelor's thesis the following question was answered:\\
+Does the inequality posed in the article Klyachko et al [2008] cover the real
+part of the Bloch surface of a 3D quantum system when used as in Kochen
+and Specker [1967]?
+\end{block}
+\pause
+\begin{remark}
+However to understand the questions, some introduction is needed.
+\end{remark}
+\end{frame}
+
+\end{document}

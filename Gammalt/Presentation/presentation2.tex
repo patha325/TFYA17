@@ -1,0 +1,186 @@
+%\documentclass[handout]{beamer}
+\documentclass[•]{beamer}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+
+
+
+\usetheme{Luebeck}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{navigation symbols}{}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{exercise}{Exercise}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\mathchardef\sa="303A
+\newcommand{\esup}{\mathop{{\rm ess\,sup}}\limits}
+\let\Eqnarray=\eqnarray
+\renewcommand{\eqnarray}{\arraycolsep=0.1675em \Eqnarray}
+
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\e}{\mathrm{e}}
+
+% enumabc
+%
+\makeatletter
+\newcommand{\enumabc}
+	{\expandafter\def\csname the\@enumctr \endcsname{\alph{\@enumctr}}%
+	 \expandafter\def\csname label\@enumctr \endcsname
+		{\rm(\csname the\@enumctr \endcsname)}}%
+\newcommand{\enuminc}[1]{\addtocounter{\@enumctr}{#1}}
+\makeatother
+%
+\subtitle{Transmission properties in a short biased quantum wire}
+\title{TFYA17 Project}
+\author{Patrik Hallsj\"{o}, Felix Faber}
+\date{}
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Table of Contents}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+\AtBeginSubsection[]
+{
+  \begin{frame}
+    \frametitle{Table of Contents}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+\begin{frame}
+\tableofcontents
+\end{frame}
+\section{Introduction}
+\begin{frame}[shrink=10]\frametitle{Introduction}
+\begin{block}
+
+\begin{itemize}
+\item This project was dedicated to study an electron transport in a biased quantum wire.
+\item The goals were to construct a solver for the potential and to calculate the transmission and reflection for an electron sent towards the potential.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}
+
+\begin{eqnarray*}
+\label{potential}
+V(x) = \beta*V_{sd}+V_{g}*tanh(s*(x-dx_{1}))\\
+-(V_{sd}+V_{g})*tanh(s*(x-dx_{2}))
+\end{eqnarray*}
+\end{block}
+\end{frame}
+
+\begin{frame}\frametitle{Goals}
+\begin{block}
+
+\begin{itemize}
+\item To set and to solve a problem with boundary conditions when an electron is injected into a wire.
+\item To calculate the transmission and reflection coefficients as functions of energy of injected electron and bias.
+\item To represent solutions in graphical form.
+\item Optional: to calculate a conductance.
+\end{itemize}
+\end{block}
+\pause
+\begin{remark}
+Matlab was used to achieve the goals.
+\end{remark}
+\end{frame}
+\section{Theory}
+
+\begin{frame}\frametitle{Finite derivatives}
+\begin{block}
+
+\begin{itemize}
+\item $f'(x) =\frac{f(x+h)-f(x+k)}{h-k}$
+\pause
+\item Forward: $\frac{f(x+h)-f(x)}{h}$
+\pause
+\item Backward: $\frac{f(x)-f(x-h)}{h}$
+\pause
+\item Central: $\frac{f(x-h/2)-f(x+h/2)}{h}$
+\pause
+\item Second order: $\frac{f(x-h)- 2f(x) +f(x+h)}{h^2}$
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}\frametitle{Finite steps in differential equations}
+\begin{itemize}
+\item Second order differential equation without any first order terms $y''(x) = g(y(x),x)$
+\item Boundary conditions: $y(x_{0}) = y_{0}$ and $y(x_{N}) = y_{N}$, on the interval $[x_{0},x_{N}]$.
+\item $h = d$ and $x = n*d$  yields $d*g(y(n*d),n*d) + 2y(n*d)-(y((n+1)*d)+y((n-1)*d)) = 0$.
+\item  $N+1$ equations with $N+1$ unknowns.
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Quantum barrier problem}
+\begin{block}
+
+\eqref{potential}. % SKRIV MED DENNA!
+
+We need to solve the stationary Schr\"odinger equation with the boundary conditions
+$y_{0} = (I + R)\exp{(-i k x_{0})}$ and $y_{N} = T\exp{(-i k x_{N})}$
+We have put $I=1$, which gives $y_{0} = (1 + R)\exp{(-i k x_{0})}$ to make the equations easier to solve.
+\pause
+We can use the finite difference approximation to solve the stationary Schr\"odinger equation as a second order ordinary differential equation (ODE).
+However, with $R$ and $T$ we have $N+3$ unknowns but only $N+1$ equations. Two more equations will be needed in order to fully solve the problem.
+\pause
+The solution to Schr\"odinger equation is continuous everywhere in the interval because it is a second order ODE,
+however it also needs to be continuous at the two boundaries.
+The finite difference approximation of the derivative yields: $y'_{0}=y'_{1}$ and $y'_{N-1}=y'_{N}$.
+There are now $N+3$ unknowns and $N+3$ equations which will have a unique solution.
+\end{block}
+\end{frame}
+
+\section{Results}
+\begin{frame}\frametitle{Numerical values}
+\begin{block}
+
+The program produces the following data, as well as images of the wave-functions and the potential barriers.
+\begin{eqnarray*}
+R=|R|^2/(|R|^2+|T|^2)\\
+T=|T|^2/(|R|^2+|T|^2)\\
+C = T/(R+T)
+\end{eqnarray*}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{test}
+\caption{Amplitudes of wave-functions (upper graph) and potential barriers (lower graph) for the case: E=1, $\beta=0.5$, $x_1=4$, $x_2=6$, $V_{sd}=0.3$, $V_g=0.6$}
+\label{fig:test}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{test2}
+\caption{Amplitudes of wave-functions (upper graph) and potential barriers (lower graph) for the case: E=1, $\beta=0.5$, $x_1=4$, $x_2=6$, $V_{sd}=0.6$, $V_g=0.3$}
+\label{fig:test2}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{test3}
+\caption{Amplitudes of wave-functions (upper graph) and potential barriers (lower graph) for the case: E=1.5, $\beta=0.5$, $x_1=4$, $x_2=6$, $V_{sd}=V_g=0.3$}
+\label{fig:test3}
+\end{figure}
+\end{frame}
+
+
+\end{document} 

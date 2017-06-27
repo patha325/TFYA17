@@ -1,0 +1,179 @@
+\documentclass[a4paper]{article}
+\usepackage[T1]{fontenc}
+%\usepackage[swedish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{fixltx2e}
+\usepackage[fleqn]{amsmath}
+\usepackage{amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage{listings}
+\usepackage[]{mcode}
+\usepackage[final]{pdfpages}
+\usepackage{titling}
+
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}%
+}
+\subtitle{Transmission properties in a short biased quantum wire}
+\title{TFYA17 Project}
+
+\author{Patrik Hallsj\"{o}, Felix Faber \\ Supervisors: Karl-Fredrik Berggren, Irina Yakymenko}
+\date{}
+\begin{document}
+
+\maketitle
+
+\section*{Abstract}
+This project is dedicated to study an electron transport in a biased quantum wire with a specific potential and an added bias voltage. We constructed a solver for the Schr\"odinger equation with the proposed potential and calculated the transmission and reflection coefficients for an electron sent towards the potential. The solver was successfully constructed and produced expected results.
+
+\newpage
+\section{Introduction}
+The physics of low-dimensional semiconductor structures such as quantum wires and quantum point contacts has developed into an important part of nanotechnology, especially in connection with spintronics and quantum informatics.
+Conductance in quantum wires quantum and quantum point contacts  made from split gate semiconductor heterostructures is quantized in steps of $2e^2/h$ \cite{1}.
+This phenomenon may be explained in terms of non-interacting electrons and the stepwise occupation of higher sub-bands as the electron density is increased.
+Each occupied sub-band contributes a fixed amount $2e^2 /h$  to the conductance where the factor of 2 comes from spin degeneracy.
+Experiments have also revealed other conductance features, which may not be explained by a single-particle model.
+The most well-know example is the 0.7 conductance anomaly  for which different explanations have been proposed \cite{2}.  In addition to 0.7 anomaly there are  0.25 and 0.85 non-linear conductance features that have been observed in the biased quantum wires \cite{3}.
+In paper \cite{4} the model of spontaneous spin polarization was proposed to explain these anomalies.
+This project deals with study of an electron transport in a short biased quantum wire. To model the quantum constriction in a quantum wire for this project our supervisors proposed to introduce a model potential that has been used in previous study \cite{5}.
+By introducing a bias along the wire this potential can be modified to treat the electron transport in the case of biased wire.
+The following goals have been specified to the project:
+\begin{enumerate}
+\item To set and to solve a problem with boundary conditions when an electron is injected into a wire.
+\item To calculate the transmission and reflection coefficients as functions of energy of injected electron and bias.
+\item To calculate a conductance.
+\end{enumerate}
+
+\section{Computational Details}
+The details only concern the coding in \textsc{Matlab}.
+The calculation has been done in \textsc{Matlab} since it suited the purpose well and it is very straightforward and easy.
+The main drawback is that the code can only be used on \textsc{Matlab} version 2013a or newer.
+It is also important to note that speed of calculation was not prioritized and that the code is not well optimized.
+
+\subsection{Theory}
+The potential that is used in this report is very similar to the potential used in \cite{5}, only that a bias has been added so the potential looks like: \begin{equation}
+\label{potential}
+V(x) = \beta e V_{sd}+V_{g} tanh(s (x-\Delta x_{1}))-(V_{sd}+V_{g}) tanh(s (x-\Delta x_{2}))
+\end{equation}
+where $V_{sd}$ is the source-drain potential, $V_{g}$ the height of the barrier, s is the steepness of the barrier and $\beta$ is a constant that will be set equal to $\frac{1}{2}$ for symmetric bias drop. 
+\subsubsection{Finite difference approximation}
+A way to approximate a derivative is to use the so-called finite difference $f'(x) =\frac{f(x+h)-f(x+k)}{h-k}$, which is commonly used when the derivative of a function is calculated numerically. $h$ and $k$ are usually small and the limit $h,k->0$ is the derivative.
+There are three variants of the finite difference that are the most commonly used i.e., forward derivation: $\frac{f(x+h)-f(x)}{h}$, backwards derivation: $\frac{f(x)-f(x-h)}{h}$ and central derivation $\frac{f(x+\frac{h}{2})-f(x-\frac{h}{2})}{h}$.
+
+This type of approximation can be applied to higher order derivatives in the same way and if one applies the central derivation two times one will yield an approximation for the second order derivative $\frac{f(x-h)- 2f(x) +f(x+h)}{h^2}$.
+
+\subsubsection{Finite steps in differential equations}
+
+A second order differential equation without any first order terms can be written in the form $y''(x) = g(y(x),x)$ with boundary conditions $y(x_{0}) = y_{0}$ and $y(x_{N}) = y_{N}$, on the interval $[x_{0},x_{N}]$. The derivative $y''(x)$ can be replaced the with the central finite difference approximation with $h = d$ and $x = n*d$, to yield $d*g(y(n*d),n*d) + 2y(n*d)-(y((n+1)*d)+y((n-1)*d)) = 0$. This is a system of $N+1$ equations with $N+1$ unknowns so it will have one unique solution which can be found by using linear algebra.
+
+\subsubsection{Quantum barrier problem}
+
+In the problem at hand, we want to find the transmission and reflection of an electron current through the potential \eqref{potential}. This means that we need to solve the stationary Schr\"odinger equation, $ E \psi (x) = (\frac{-\hbar ^2}{2m^*} \frac{\partial^2}{\partial x^2} +V(x)) \psi (x)$ where $\psi (x)$ and y(x) are equivalent through the rapport. The equation needs to be solved with the following boundary conditions $y_{0} = I\exp{(ik x_{0})} + r\exp{(-i k x_{0})}$ and $y_{N} = t\exp{(i q x_{N})}$ where $|t|^2,|r|^2$ and $|I|^2$ are the probabilities for the transmitted, reflected and incoming particle. We have put $I=1$, which gives $y_{0} = \exp{(ik x_{0})} + r\exp{(-i k x_{0})}$ to make the equations easier to solve. \\Here we use: $k=\sqrt{\frac{2m^*}{\hbar^2}(E-\beta e V_{Sd})}$ and $q=\sqrt{\frac{2m^*}{\hbar^2}(E+ (1-\beta) e V_{Sd})}$ .
+
+We can use the finite difference approximation to solve the stationary \\Schr\"odinger equation as a second order ordinary differential equation (ODE). However, with $r$ and $t$ we have $N+3$ unknowns but only $N+1$ equations. Two more equations will be needed in order to fully solve the problem.
+
+The solution to Schr\"odinger equation is continuous everywhere in the interval because it is a second order ODE, however it also needs to be continuous at the two boundaries. The finite difference approximation of the derivative yields: $y'_{0}=y'_{1}$ and $y'_{N-1}=y'_{N}$. There are now $N+3$ unknowns and $N+3$ equations which will have a unique solution.
+
+
+\subsection{Code}
+We have developed the code based on the theory outlined above which calculates the conductance for a certain potential. It also plots both the potential and the wave-function that are calculated by solving the Schr\"odinger equation.
+The code can be used for calculating any potential. However, in this project a specific potential, \eqref{potential}, was of interest.
+
+
+In the code, by default, $V_{sd}$ and $V_g$ are specified as $0.3$, $x_2$ and $x_1$ are equal to 6 and 4 respectively.
+For the user, the energy of the incoming electron E, the size of steps to divide the interval in, the value of s in \eqref{potential} for the potential and also the colour of the plot should be specified. Details can be found in the code description in the appendix.
+
+\section{Results}
+Running the code for certain values of E, $\beta$, $x_1$, $x_2$, $V_{sd}$, $V_g$ results in the following images of the wave-functions and the potential barriers, where the code has been run three times with different s parameters for each plot.
+\\
+In the first figure, figure \ref{fig:test}, parameters have been chosen so that the difference in potential on the different sides of the barrier is small and that the energy of the injected electron is lower than the barrier. 
+\\
+However, in figure \ref{fig:test2} parameters have been chosen so that the difference in potential on the different sides of the barrier is substantial and that the energy of the injected electron is lower than the barrier. 
+\\
+In the last figure, figure \ref{fig:test3}, parameters have been chosen so that the difference in potential on the different sides of the barrier is small however, the energy of the injected electron is now higher than the barrier for $s=0.1$ and at the top value for the other s. 
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.85, trim = 35mm 100mm 35mm 100mm, clip]{test}
+\caption{Amplitudes of wave-functions (upper graph) and potential barriers (lower graph) for the case: E=1, $\beta=0.5$, $x_1=4$, $x_2=6$, $V_{sd}=0.3$, $V_g=0.6$}
+\label{fig:test}
+\end{figure}
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.85, trim = 35mm 100mm 35mm 100mm, clip]{test2}
+\caption{Amplitudes of wave-functions (upper graph) and potential barriers (lower graph) for the case: E=1, $\beta=0.5$, $x_1=4$, $x_2=6$, $V_{sd}=0.6$, $V_g=0.3$}
+\label{fig:test2}
+\end{figure}
+\newpage
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.85, trim = 35mm 101mm 35mm 100mm, clip]{test3}
+\caption{Amplitudes of wave-functions (upper graph) and potential barriers (lower graph) for the case: E=1.5, $\beta=0.5$, $x_1=4$, $x_2=6$, $V_{sd}=V_g=0.3$}
+\label{fig:test3}
+\end{figure}
+
+The code also calculates the conductance for each run, by calculating the reflection and transmission coefficients and using the following relation:
+\begin{eqnarray*}
+R=|r|^2/(|r|^2+|t|^2)\\
+T=|t|^2/(|r|^2+|t|^2)\\
+C \propto T/(R+T)
+\end{eqnarray*}
+
+\section{Discussion}
+
+
+The code can most likely be optimized to run faster if one has enough time, however we prioritized getting a working code. The main reason for the long computing time is that several different \textsc{Matlab} packages were used. In a longer project a good idea would be to create a code using some other programming language.
+
+
+For the potential given in this report there were no references of what results that were expected. However for known solutions, (radial potential, harmonic oscillator, etc.) the code has been tested and the results given were exactly as predicted. The figures above show the potentials and wave-functions for different input parameters. The solutions are similar to those of an electron sent through a square potential, when $ s$ is large, as can be seen in all figures, this works as a verification of the solver.
+
+
+Increasing the barrier height reduces the transmission, especially when the energy of the electron is below the height of potential. This behaviour is similar to transmission through a square barrier. It is also clear from the figures that adding a bias to the potential affects the wave-function in the way that probability density is shifted to the right side of the barrier, thus increasing the transmission. It is also important to note that resonances can occur for certain parameters inside potential barrier (no pictures are shown of this), especially when s is large. The probability density is greatly increased in these resonances. 
+ 
+
+\section{Conclusion}
+
+The goals are listed below and it is commented the results achieved:
+\begin{itemize}
+\item To set and to solve a problem with boundary conditions when an electron is injected into a wire.
+\end{itemize}
+Done through the code by solving the Schr\"odinger equation and with that solution imposing boundary conditions.
+\begin{itemize}
+\item To calculate the transmission and reflection coefficients as  functions of energy of injected electron and bias.
+\end{itemize}
+
+The code was able to calculate the transmission and reflection from the solution. There are however, no specific examples of the calculated transmission or reflection shown in this article.
+
+
+%This is done in the same way as above, however not explicitly provided. At present only the conductance is calculated through this, though the code provides writing out transmission and reflection coefficients.
+\begin{itemize}
+\item To represent solutions in graphical form.
+\end{itemize}
+Done through the graphs plotted under Results.
+\begin{itemize}
+\item To calculate a conductance.
+\end{itemize}
+This was achieved by using the code which is presented in the appendix and using that which was presented in Section 3.
+\\
+In conclusion, we have achieved all the goals that were set up for the project, even the optional part.  The code could have been optimized to improve speed, but we judged that the speed is sufficient.
+
+\newpage
+\bibliographystyle{unsrt}
+%\nocite{1}
+%\nocite{2}
+%\nocite{3}
+%\nocite{4}
+%\nocite{5}
+
+\bibliography{ourrefs}
+\newpage
+\part*{Appendix}
+%Appendix with matlab code! - Patrik
+
+\lstinputlisting[language=Matlab]{Schrodinger.m}
+
+\end{document}

@@ -1,0 +1,35 @@
+General:
+1. Why no theory part?
+2. From "The efficiency of any until the end should probably lie under theory."
+3. Good rapport!
+4. Interesting to read!
+5. Did you choose the material or is this ongoing research?
+6. Good pictures!
+
+Introduction:
+1. "Besides, thermo..." should be "Also, thermo..."
+2. What is Z, T? Why ttwo T? what units should everything be in?
+3. Why is the studies on thin film Ca3Co4O9 Limited?
+
+Experimental details:
+1. Does CCO1,2,3, mean anything? or just names? Elemental ratio, do you mean 
+different isotopes or different chemical composition? thus not Ca3Co4O9.
+2. "The total pressure of gases was maintained to 2m (Torr)" should be 2mTorr.
+3. What do you mean by oxygen environment? Ca: 100% oxygen?
+
+Results and discussion:
+1. Figure 2. What would the expected phase have looked like?
+2. What do you mean by "the as-deposited films"
+3. Figure 3. What do you want to explain with this figure? 
+Explain more as you have done with the other figures.
+4. When did you actually confirm that you got the wanted film?
+
+Conclusion:
+1. where is the first part shown?
+2. When did you discuss co-sputtering and how did you show that this gave good control?
+3. Where did you sho that whis was faster? Compared to what?
+
+Discussion parts:
+1. Why did you choose to not explain EDS, pole figure analyses etc?
+2. When did you actually confirm that you got the wanted film? 
+What were you looking for? Would you know if you found it?

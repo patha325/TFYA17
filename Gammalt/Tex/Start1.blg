@@ -1,0 +1,13 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: Start1.aux
+The style file: unsrt.bst
+Database file #1: ourrefs.bib
+Warning--there's a number but no volume in 2
+Name 1 in "T.-M. Chen, A.C. Graham, M. Pepper, I. Farrer, D. A. Ritchie, and M. Y. Simmons" has a comma at the end for entry 3
+while executing---line 944 of file unsrt.bst
+Too many commas in name 1 of "T.-M. Chen, A.C. Graham, M. Pepper, I. Farrer, D. A. Ritchie, and M. Y. Simmons" for entry 3
+while executing---line 944 of file unsrt.bst
+Too many commas in name 1 of "T.-M. Chen, A.C. Graham, M. Pepper, I. Farrer, D. A. Ritchie, and M. Y. Simmons" for entry 3
+while executing---line 944 of file unsrt.bst
+Name 1 in "H. Lind, I. I. Yakimenko, and K.-F. Berggren" has a comma at the end for entry 4
+while executing---line 944 of file unsrt.bst
+(There were 4 error messages)
